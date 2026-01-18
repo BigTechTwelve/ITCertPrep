@@ -24,6 +24,7 @@ DROP POLICY IF EXISTS "Teachers can insert their own questions" ON questions;
 DROP POLICY IF EXISTS "Teachers can update their own questions" ON questions;
 DROP POLICY IF EXISTS "Teachers can delete their own questions" ON questions;
 DROP POLICY IF EXISTS "Questions are viewable by everyone" ON questions; -- We need to replace this one
+DROP POLICY IF EXISTS "Users can view public or own questions" ON questions; -- Ensure we can re-run this
 
 -- 1. View Policy: Public questions OR Created by user
 CREATE POLICY "Users can view public or own questions"
