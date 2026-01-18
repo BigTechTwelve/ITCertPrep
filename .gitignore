@@ -25,7 +25,18 @@ dist-ssr
 
 # Security
 .env
+.env.*
+!.env.example
+
+# Supabase
+supabase/.temp/
+supabase/.env
+supabase/.vault/
+supabase/functions/.env
+supabase/.branches/
 
 # AI / Temp
 .gemini
 models_output.txt
+*.sql.bak
+*.sql.tmp
