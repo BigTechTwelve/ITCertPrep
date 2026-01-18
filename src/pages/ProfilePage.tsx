@@ -133,8 +133,40 @@ export default function ProfilePage() {
 
     if (loading) return <div className="h-screen flex items-center justify-center text-slate-400 font-medium">Synchronizing profile data...</div>;
 
-    // Private Profile View (for students, or if explicitly private)
-    if (!profile || (!isOwnProfile && !profile.is_public && profile.role !== 'teacher')) {
+    if (!profile) {
+        if (isOwnProfile) {
+            return (
+                <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+                    <div className="bg-white dark:bg-slate-900 p-12 rounded-[40px] shadow-premium text-center max-w-md w-full border border-slate-100 dark:border-slate-800">
+                        <div className="w-24 h-24 bg-rose-50 dark:bg-rose-900/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <Shield className="w-10 h-10 text-rose-500" />
+                        </div>
+                        <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Dossier Missing</h2>
+                        <p className="text-slate-500 dark:text-slate-400 mb-6">Your operative dossier was not initialized correctly. This can happen if the sync trigger was interrupted.</p>
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="w-full py-4 bg-primary-600 hover:bg-primary-500 text-white font-black rounded-2xl shadow-xl transition-all"
+                        >
+                            Retry Sync
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        return (
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+                <div className="bg-white dark:bg-slate-900 p-12 rounded-[40px] shadow-premium text-center max-w-md w-full border border-slate-100 dark:border-slate-800">
+                    <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <User className="w-10 h-10 text-slate-300" />
+                    </div>
+                    <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Restricted Access</h2>
+                    <p className="text-slate-500 dark:text-slate-400">This operative's dossier is classified.</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!isOwnProfile && !profile.is_public && profile.role !== 'teacher') {
         return (
             <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
                 <div className="bg-white dark:bg-slate-900 p-12 rounded-[40px] shadow-premium text-center max-w-md w-full border border-slate-100 dark:border-slate-800">

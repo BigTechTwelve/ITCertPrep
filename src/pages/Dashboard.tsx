@@ -7,6 +7,8 @@ import TeacherDashboard from '../components/dashboard/TeacherDashboard';
 import AdminDashboard from '../components/dashboard/AdminDashboard';
 import Navbar from '../components/common/Navbar';
 
+import RoleOnboarding from '../components/auth/RoleOnboarding';
+
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
 export default function Dashboard() {
@@ -14,53 +16,58 @@ export default function Dashboard() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        async function getProfile() {
-            if (!user) return;
+    const getProfile = async () => {
+        if (!user) return;
 
-            // Skip profile fetch for dev mode mock users
-            if (user.id === '00000000-0000-0000-0000-000000000000') {
-                setProfile({ id: user.id, role: 'student', full_name: 'Dev Student' } as any);
-                setLoading(false);
-                return;
-            }
-
-            if (user.id === '00000000-0000-0000-0000-000000000001') {
-                setProfile({ id: user.id, role: 'admin', full_name: 'Dev Admin' } as any);
-                setLoading(false);
-                return;
-            }
-
-            if (user.id === '00000000-0000-0000-0000-000000000002') {
-                setProfile({ id: user.id, role: 'teacher', full_name: 'Dev Teacher' } as any);
-                setLoading(false);
-                return;
-            }
-
-            try {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', user.id)
-                    .single();
-
-                if (error) {
-                    console.error('Error fetching profile:', error);
-                } else if (data) {
-                    setProfile(data);
-                }
-            } catch (error) {
-                console.error('Error fetching profile:', error);
-            } finally {
-                setLoading(false);
-            }
+        // Skip profile fetch for dev mode mock users
+        if (user.id === '00000000-0000-0000-0000-000000000000') {
+            setProfile({ id: user.id, role: 'student', full_name: 'Dev Student' } as any);
+            setLoading(false);
+            return;
         }
 
+        if (user.id === '00000000-0000-0000-0000-000000000001') {
+            setProfile({ id: user.id, role: 'admin', full_name: 'Dev Admin' } as any);
+            setLoading(false);
+            return;
+        }
+
+        if (user.id === '00000000-0000-0000-0000-000000000002') {
+            setProfile({ id: user.id, role: 'teacher', full_name: 'Dev Teacher' } as any);
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', user.id)
+                .single();
+
+            if (error) {
+                console.error('Error fetching profile:', error);
+            } else if (data) {
+                setProfile(data);
+            }
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
         getProfile();
     }, [user]);
 
     if (loading) {
         return <div className="flex justify-center items-center min-h-screen">Loading profile...</div>;
+    }
+
+    // If user has no role, we need them to choose one (Onboarding)
+    if (!profile?.role) {
+        return <RoleOnboarding onComplete={getProfile} />;
     }
 
     return (
@@ -71,7 +78,7 @@ export default function Dashboard() {
                 <div>
                     {profile?.role === 'admin' && <AdminDashboard />}
                     {profile?.role === 'teacher' && <TeacherDashboard />}
-                    {(profile?.role === 'student' || !profile?.role) && <StudentDashboard />}
+                    {profile?.role === 'student' && <StudentDashboard />}
                 </div>
             </div>
         </div>
