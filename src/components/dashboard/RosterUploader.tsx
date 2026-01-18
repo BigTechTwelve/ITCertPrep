@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import Papa from 'papaparse';
-import { Upload, FileUp, AlertCircle, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { FileUp, AlertCircle, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 interface RosterUploaderProps {
     classId: string;

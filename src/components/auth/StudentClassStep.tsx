@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Box, ArrowRight, ArrowLeft, Loader2, Hash } from 'lucide-react';
+import { Box, ArrowLeft, Loader2, Hash } from 'lucide-react';
 import UserAvatar from '../common/UserAvatar';
 import type { Database } from '../../types/supabase';
 
 type Class = Database['public']['Tables']['classes']['Row'];
-type Profile = Database['public']['Tables']['profiles']['Row'];
 
 interface EnrichedClass extends Class {
     instructor?: {
@@ -13,6 +12,7 @@ interface EnrichedClass extends Class {
         avatar_url: string | null;
     };
     organization?: {
+        id: string;
         name: string;
     };
 }
@@ -44,7 +44,7 @@ export default function StudentClassStep({ onBack, onComplete, onSkip }: Student
                 .from('classes')
                 .select(`
                     *,
-                    organization:organizations(name)
+                    organization:organizations(id, name)
                 `)
                 .eq('class_code', cleanCode)
                 .single();
@@ -73,7 +73,9 @@ export default function StudentClassStep({ onBack, onComplete, onSkip }: Student
 
     const handleJoin = async () => {
         if (!foundClass) return;
-        onComplete(foundClass.id, foundClass.organization_id);
+        // Use organization.id if available, otherwise fall back to class.organization_id if types allow, or null
+        const orgId = foundClass.organization?.id || (foundClass as any).organization_id || null;
+        onComplete(foundClass.id, orgId);
     };
 
     return (
@@ -122,7 +124,7 @@ export default function StudentClassStep({ onBack, onComplete, onSkip }: Student
                             <span className="text-emerald-500 font-mono font-bold tracking-widest">{code}</span>
                         </div>
 
-                        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">{foundClass.name || foundClass.title}</h3>
+                        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">{foundClass.title}</h3>
                         <p className="text-slate-500 font-medium mb-6">
                             {foundClass.organization?.name || 'Unknown Organization'}
                         </p>

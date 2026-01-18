@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { ArrowLeft, Box, Calendar, Users, Shield } from 'lucide-react';
+import { ArrowLeft, Box, Calendar, Shield } from 'lucide-react';
 import UserAvatar from '../common/UserAvatar';
 import type { Database } from '../../types/supabase';
 
 type Class = Database['public']['Tables']['classes']['Row'] & {
+    code?: string; // Manually adding if types are stale
     instructor?: {
         full_name: string | null;
         email: string | null;
@@ -94,19 +95,16 @@ export default function ClassManager({ onBack }: ClassManagerProps) {
                                 <div className="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl text-emerald-600">
                                     <Box className="w-6 h-6" />
                                 </div>
-                                <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest ${cls.is_active
-                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
-                                        : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
-                                    }`}>
-                                    {cls.is_active ? 'Active' : 'Archived'}
+                                <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400`}>
+                                    Active
                                 </span>
                             </div>
 
-                            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2 line-clamp-1" title={cls.name}>
-                                {cls.name}
+                            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2 line-clamp-1" title={cls.title}>
+                                {cls.title}
                             </h3>
                             <p className="text-slate-500 text-sm mb-6 line-clamp-2 min-h-[40px]">
-                                {cls.description || "No description provided."}
+                                {cls.code}
                             </p>
 
                             <div className="space-y-4 pt-4 border-t border-slate-50 dark:border-slate-800">

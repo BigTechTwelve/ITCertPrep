@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Building2, Search, Plus, MapPin, Mail, ArrowLeft, CheckCircle2 } from 'lucide-react';
-import { useApplyDebounced } from '../../hooks/useDebounce'; // Assuming we might want debounce, or standard useEffect
 
 interface Organization {
     id: string;
@@ -133,8 +132,8 @@ export default function OrganizationStep({ onBack, onComplete }: OrganizationSte
                                 key={org.id}
                                 onClick={() => setSelectedOrg(org)}
                                 className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${selectedOrg?.id === org.id
-                                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/10'
-                                        : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-indigo-200'
+                                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/10'
+                                    : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-indigo-200'
                                     }`}
                             >
                                 <div className="flex justify-between items-center">
