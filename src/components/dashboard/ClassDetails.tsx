@@ -3,13 +3,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import type { Database } from '../../types/supabase';
-import { Users, ChevronLeft, Copy, UserPlus, BookOpen, PlayCircle, Trash2, LayoutGrid, BarChart3, ListTodo } from 'lucide-react';
+import { Users, ChevronLeft, Copy, UserPlus, BookOpen, PlayCircle, Trash2, LayoutGrid, BarChart3, ListTodo, Upload } from 'lucide-react';
 import ClassAnalytics from './ClassAnalytics';
 import Navbar from '../common/Navbar';
 import UserAvatar from '../common/UserAvatar';
+import RosterUploader from './RosterUploader';
 
+// Define Enrollment Type
 type Enrollment = Database['public']['Tables']['class_enrollments']['Row'] & {
-    profiles: Database['public']['Tables']['profiles']['Row']
+    profiles: Database['public']['Tables']['profiles']['Row'] | null
 };
 
 type Class = Database['public']['Tables']['classes']['Row'] & {
@@ -35,6 +37,7 @@ export default function ClassDetails() {
     const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'assignments'>('overview');
     const [loading, setLoading] = useState(true);
     const [showInviteModal, setShowInviteModal] = useState(false);
+    const [showImportModal, setShowImportModal] = useState(false);
     const [assignments, setAssignments] = useState<any[]>([]);
     const [showAssignmentModal, setShowAssignmentModal] = useState(false);
     const [newAssignment, setNewAssignment] = useState({
@@ -178,13 +181,22 @@ export default function ClassDetails() {
                                             <span className="text-xs font-bold text-slate-400 uppercase mr-2">Class Code:</span>
                                             <span className="font-mono font-black text-lg text-slate-900 dark:text-white tracking-widest">{classDetails.code}</span>
                                         </div>
-                                        <button
-                                            onClick={() => setShowInviteModal(true)}
-                                            className="inline-flex items-center px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white font-black rounded-2xl shadow-xl hover:shadow-primary-500/25 transition-all active:scale-95"
-                                        >
-                                            <UserPlus className="h-5 w-5 mr-3" />
-                                            Invite Students
-                                        </button>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => setShowImportModal(true)}
+                                                className="inline-flex items-center px-6 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl shadow-xl hover:shadow-indigo-500/25 transition-all active:scale-95"
+                                            >
+                                                <Upload className="h-5 w-5 mr-2" />
+                                                Import CSV
+                                            </button>
+                                            <button
+                                                onClick={() => setShowInviteModal(true)}
+                                                className="inline-flex items-center px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white font-black rounded-2xl shadow-xl hover:shadow-primary-500/25 transition-all active:scale-95"
+                                            >
+                                                <UserPlus className="h-5 w-5 mr-3" />
+                                                Invite
+                                            </button>
+                                        </div>
                                     </>
                                 )}
                             </div>
@@ -373,6 +385,39 @@ export default function ClassDetails() {
                                                             <PlayCircle className="h-5 w-5 mr-2" />
                                                             {metrics[user?.id || '']?.totalAnswered > 0 ? 'Continue' : 'Start'}
                                                         </button>
+                                                    </div>
+                                                )}
+
+                                                {/* Import Roster Modal */}
+                                                {showImportModal && (
+                                                    <div className="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                                        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" aria-hidden="true" onClick={() => setShowImportModal(false)}></div>
+                                                        <div className="flex min-h-full p-4 sm:p-12 md:p-20">
+                                                            <div className="relative m-auto bg-white dark:bg-slate-900 rounded-[40px] px-8 pt-8 pb-8 text-left shadow-premium transform transition-all sm:max-w-lg sm:w-full border border-white dark:border-slate-800">
+                                                                <div className="absolute top-0 right-0 pt-8 pr-8">
+                                                                    <button
+                                                                        type="button"
+                                                                        className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
+                                                                        onClick={() => setShowImportModal(false)}
+                                                                    >
+                                                                        <span className="sr-only">Close</span>
+                                                                        <span className="text-3xl font-light">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div>
+                                                                    <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-2">Bulk Import Students</h3>
+                                                                    <p className="text-slate-500 dark:text-slate-400 font-medium mb-6">Upload a CSV file with an <code>email</code> column to enroll students instantly.</p>
+
+                                                                    <RosterUploader
+                                                                        classId={classId!}
+                                                                        onUploadComplete={() => {
+                                                                            alert('Import complete! Refreshing list...');
+                                                                            window.location.reload();
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>
@@ -605,7 +650,7 @@ export default function ClassDetails() {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
 
