@@ -209,7 +209,6 @@ export default function ProfilePage() {
 
                     <div className="px-8 md:px-12 pb-12 relative pt-4 md:pt-8">
                         <div className="flex flex-col md:flex-row justify-between items-end -mt-24 md:-mt-32 gap-6 pb-2">
-
                             <div className="relative group">
                                 <div className="absolute -inset-1 bg-gradient-to-r from-primary-600 to-indigo-600 rounded-[36px] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
                                 <UserAvatar
@@ -228,24 +227,27 @@ export default function ProfilePage() {
 
                             <div className="flex-1 mb-2 text-center md:text-left w-full">
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                    <div>
-                                        <div className="mb-4">
-                                            <label className="block text-[10px] font-black uppercase text-slate-400 tracking-wider mb-1 opacity-70">Codename</label>
-                                            {isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    className="text-3xl font-black text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 border-b-2 border-primary-500 focus:outline-none px-2 py-1 rounded-t-lg w-full md:w-auto"
-                                                    value={editForm.full_name}
-                                                    onChange={e => setEditForm({ ...editForm, full_name: e.target.value })}
-                                                    autoFocus
-                                                />
-                                            ) : (
-                                                <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
-                                                    {profile.full_name || 'Anonymous User'}
-                                                </h1>
-                                            )}
+                                    <div className="flex flex-col justify-center min-h-[100px]">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider opacity-70 block">Operative Codename</label>
+                                            <div className="h-14 flex items-center">
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        className="text-3xl font-black text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 border-b-2 border-primary-500 focus:outline-none px-2 py-1 rounded-t-lg w-full md:w-auto"
+                                                        value={editForm.full_name}
+                                                        onChange={e => setEditForm({ ...editForm, full_name: e.target.value })}
+                                                        autoFocus
+                                                    />
+                                                ) : (
+                                                    <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
+                                                        {profile.full_name || 'Anonymous User'}
+                                                    </h1>
+                                                )}
+                                            </div>
                                         </div>
-                                        <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 font-medium pb-2 md:pb-0">
+
+                                        <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 font-medium h-8">
                                             {isTeacher ? (
                                                 <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-black uppercase tracking-widest border border-slate-200 dark:border-slate-700">
                                                     <Briefcase className="w-3 h-3" />
@@ -260,99 +262,103 @@ export default function ProfilePage() {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="flex items-center justify-center md:justify-start gap-3">
-                                        {isEditing ? (
-                                            <div className="relative flex items-center">
-                                                <span className="absolute left-3 text-slate-400 font-bold">@</span>
-                                                <input
-                                                    type="text"
-                                                    placeholder="username"
-                                                    className="pl-7 pr-3 py-1 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold tracking-wide border-2 border-primary-500 focus:outline-none"
-                                                    value={editForm.username}
-                                                    onChange={e => setEditForm({ ...editForm, username: e.target.value.toLowerCase().replace(/\s/g, '') })}
-                                                />
-                                            </div>
-                                        ) : (
-                                            <span className="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-bold tracking-wide border border-slate-200 dark:border-slate-700">
+                                </div>
+                                <div className="flex items-center justify-center md:justify-start gap-3 mt-4">
+                                    {isEditing ? (
+                                        <div className="relative flex items-center">
+                                            <span className="absolute left-3 text-slate-400 font-bold">@</span>
+                                            <input
+                                                type="text"
+                                                placeholder="username"
+                                                className="pl-7 pr-3 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold tracking-wide border-2 border-primary-500 focus:outline-none"
+                                                value={editForm.username}
+                                                onChange={e => setEditForm({ ...editForm, username: e.target.value.toLowerCase().replace(/\s/g, '') })}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="h-8 flex items-center">
+                                            <span className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-bold tracking-wide border border-slate-200 dark:border-slate-700">
                                                 @{profile.username || 'operative'}
                                             </span>
-                                        )}
-                                        <span className="px-3 py-1 rounded-lg bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 text-xs font-black uppercase tracking-widest border border-primary-100 dark:border-primary-800">
-                                            {profile.role || 'Scholar'}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Action Buttons */}
-                                <div className="flex items-center gap-3">
-                                    <div className="relative">
-                                        <button
-                                            onClick={handleShare}
-                                            className="p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-400 hover:text-primary-500 hover:border-primary-200 dark:hover:border-primary-900 transition-all shadow-sm hover:shadow-md"
-                                            title="Copy Public Link"
-                                        >
-                                            {showShareTooltip ? <Check className="w-5 h-5 text-emerald-500" /> : <Share2 className="w-5 h-5" />}
-                                        </button>
-                                        {showShareTooltip && (
-                                            <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-lg shadow-xl whitespace-nowrap animate-bounce">
-                                                Copied!
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {isOwnProfile && (
-                                        isEditing ? (
-                                            <div className="flex gap-2">
-                                                <button
-                                                    onClick={() => setIsEditing(false)}
-                                                    className="p-3 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-xl font-bold hover:bg-rose-100 transition-all"
-                                                >
-                                                    <X className="w-5 h-5" />
-                                                </button>
-                                                <button
-                                                    onClick={handleSave}
-                                                    className="flex items-center px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-white font-black rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all"
-                                                >
-                                                    <Save className="w-4 h-4 mr-2" /> Save
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <button
-                                                onClick={() => setIsEditing(true)}
-                                                className="flex items-center px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 font-black rounded-xl shadow-lg transition-all"
-                                            >
-                                                <Edit2 className="w-4 h-4 mr-2" /> Edit Profile
-                                            </button>
-                                        )
+                                        </div>
                                     )}
+                                    <span className="px-3 py-1.5 rounded-lg bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 text-xs font-black uppercase tracking-widest border border-primary-100 dark:border-primary-800">
+                                        {profile.role || 'Scholar'}
+                                    </span>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center justify-center md:justify-end gap-3 mt-6">
+                        <div className="relative">
+                            <button
+                                onClick={handleShare}
+                                className="p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-400 hover:text-primary-500 hover:border-primary-200 dark:hover:border-primary-900 transition-all shadow-sm hover:shadow-md"
+                                title="Copy Public Link"
+                            >
+                                {showShareTooltip ? <Check className="w-5 h-5 text-emerald-500" /> : <Share2 className="w-5 h-5" />}
+                            </button>
+                            {showShareTooltip && (
+                                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-lg shadow-xl whitespace-nowrap animate-bounce">
+                                    Copied!
+                                </div>
+                            )}
+                        </div>
+
+                        {isOwnProfile && (
+                            isEditing ? (
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setIsEditing(false)}
+                                        className="p-3 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-xl font-bold hover:bg-rose-100 transition-all"
+                                    >
+                                        <X className="w-5 h-5" />
+                                    </button>
+                                    <button
+                                        onClick={handleSave}
+                                        className="flex items-center px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-white font-black rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all"
+                                    >
+                                        <Save className="w-4 h-4 mr-2" /> Save
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => setIsEditing(true)}
+                                    className="flex items-center px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 font-black rounded-xl shadow-lg transition-all"
+                                >
+                                    <Edit2 className="w-4 h-4 mr-2" /> Edit Profile
+                                </button>
+                            )
+                        )}
                     </div>
                 </div>
 
                 {/* Level Progress Bar (Student Only) */}
                 {!isTeacher && (
-                    <div className="mt-12 bg-slate-50 dark:bg-slate-950 rounded-2xl p-6 border border-slate-100 dark:border-slate-800">
-                        <div className="flex justify-between items-end mb-2">
+                    <div className="mt-12 bg-white dark:bg-slate-900 rounded-[32px] p-8 border border-white dark:border-slate-800 shadow-premium">
+                        <div className="flex justify-between items-end mb-4">
                             <div>
-                                <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest block mb-1">Current Progress</span>
-                                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                                <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest block mb-1">Deployment Progress</span>
+                                <span className="text-xl font-black text-slate-900 dark:text-white">
                                     <span className="text-primary-600 dark:text-primary-400">{Math.floor(profile.points || 0)}</span>
-                                    <span className="mx-1 text-slate-300">/</span>
+                                    <span className="mx-2 text-slate-300 dark:text-slate-700">/</span>
                                     {nextLevelXP} XP
                                 </span>
                             </div>
-                            <span className="text-xs font-black text-primary-500 bg-primary-50 dark:bg-primary-900/20 px-2 py-1 rounded-lg">
-                                {Math.round(progress)}%
-                            </span>
+                            <div className="text-right">
+                                <span className="text-xs font-black text-primary-500 bg-primary-50 dark:bg-primary-900/20 px-3 py-1.5 rounded-xl">
+                                    {Math.round(progress)}% Complete
+                                </span>
+                            </div>
                         </div>
-                        <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border-4 border-white dark:border-slate-900 shadow-inner">
                             <div
-                                className="h-full bg-gradient-to-r from-primary-500 to-indigo-600 shadow-[0_0_15px_rgba(99,102,241,0.5)] transition-all duration-1000 ease-out"
+                                className="h-full bg-gradient-to-r from-primary-500 via-indigo-500 to-violet-600 transition-all duration-1000 ease-out relative"
                                 style={{ width: `${progress}%` }}
                             >
-                                <div className="w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-[progress-bar-stripes_1s_linear_infinite]"></div>
+                                <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:1rem_1rem] animate-[progress-bar-stripes_1s_linear_infinite]"></div>
                             </div>
                         </div>
                     </div>
