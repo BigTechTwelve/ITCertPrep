@@ -722,8 +722,7 @@ export default function QuizPage() {
         return (
             <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 pb-20 relative overflow-hidden">
                 <div className="absolute top-0 -left-20 w-96 h-96 bg-primary-500/10 blur-[120px] rounded-full animate-pulse"></div>
-                <Navbar profile={profile} />
-                <div className="max-w-2xl mx-auto px-4 pt-24 md:pt-32 pb-24 relative z-10">
+                <div className="max-w-2xl mx-auto px-4 pt-20 md:pt-24 pb-24 relative z-10">
                     <button
                         onClick={() => navigate('/dashboard')}
                         className="mb-8 group flex items-center text-slate-500 hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-400 font-bold transition-all"
@@ -833,7 +832,7 @@ export default function QuizPage() {
                 />
             )}
 
-            <div className="max-w-4xl mx-auto px-4 pt-24 md:pt-32 relative z-10">
+            <div className="max-w-4xl mx-auto px-4 pt-20 md:pt-24 relative z-10">
                 <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <button
                         onClick={() => navigate('/dashboard')}

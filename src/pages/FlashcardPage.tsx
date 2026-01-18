@@ -193,7 +193,7 @@ export default function FlashcardPage() {
             <div className="absolute top-0 -left-20 w-96 h-96 bg-primary-500/5 blur-[120px] rounded-full"></div>
             <BadgeNotification badges={earnedBadges} onClose={() => setEarnedBadges([])} />
 
-            <div className="max-w-4xl mx-auto px-4 md:px-8 pt-24 md:pt-32 pb-24 relative z-10 w-full perspective-1000">
+            <div className="max-w-4xl mx-auto px-4 md:px-8 pt-20 md:pt-24 pb-24 relative z-10 w-full perspective-1000">
                 {/* Header & Tabs */}
                 <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-8">
                     <div>

@@ -47,7 +47,7 @@ export default function LeaderboardPage() {
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 pb-20 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500/5 blur-[120px] rounded-full"></div>
 
-            <div className="max-w-4xl mx-auto px-4 pt-24 md:pt-32 pb-24 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 pt-20 md:pt-24 pb-24 relative z-10">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center justify-center w-20 h-20 rounded-[24px] bg-gradient-to-br from-amber-400 to-orange-600 shadow-xl mb-6 shadow-orange-500/20">
                         <Trophy className="w-10 h-10 text-white" />

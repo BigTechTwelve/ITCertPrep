@@ -240,7 +240,7 @@ export default function ProfilePage() {
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 pb-20 fade-in">
-            <div className="max-w-5xl mx-auto pt-20 px-4 sm:px-6 lg:px-8 space-y-8">
+            <div className="max-w-7xl mx-auto pt-20 md:pt-24 px-4 sm:px-6 lg:px-8 space-y-8">
                 {/* Header Card */}
                 <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-premium overflow-hidden border border-white dark:border-slate-800 transition-all hover:shadow-2xl relative group">
                     {/* Cover Gradient */}

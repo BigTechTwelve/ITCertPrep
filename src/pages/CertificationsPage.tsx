@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Award, ChevronRight, Book, ArrowLeft } from 'lucide-react';
-import Navbar from '../components/common/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 
 interface Certification {
@@ -14,22 +13,12 @@ interface Certification {
 export default function CertificationsPage() {
     const navigate = useNavigate();
     const { user } = useAuth();
-    const [profile, setProfile] = useState<any>(null);
     const [certifications, setCertifications] = useState<Certification[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchCerts() {
             try {
-                if (user) {
-                    const { data: profile } = await supabase
-                        .from('profiles')
-                        .select('*')
-                        .eq('id', user.id)
-                        .single();
-                    setProfile(profile);
-                }
-
                 const { data, error } = await supabase
                     .from('certifications')
                     .select('*')
@@ -48,9 +37,8 @@ export default function CertificationsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-[var(--bg-app)] transition-colors duration-300">
-            <Navbar profile={profile} />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 pb-24">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-24">
                 <div className="space-y-8 fade-in">
                     {/* Header */}
                     <div className="flex items-center gap-4">

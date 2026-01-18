@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import Navbar from '../components/common/Navbar';
 import { Users, Trophy, LogOut, MessageSquare } from 'lucide-react';
 import GuildChat from '../components/guilds/GuildChat';
 import UserAvatar from '../components/common/UserAvatar';
@@ -21,21 +20,12 @@ export default function GuildDetails() {
 
     const [guild, setGuild] = useState<Guild | null>(null);
     const [members, setMembers] = useState<GuildMember[]>([]);
-    const [userProfile, setUserProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
     const [isMember, setIsMember] = useState(false);
 
     useEffect(() => {
         async function loadData() {
             if (!user || !guildId) return;
-
-            // 1. Fetch User Profile (for Navbar)
-            const { data: profileData } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', user.id)
-                .single();
-            setUserProfile(profileData);
 
             // 2. Fetch Guild Details
             const { data: guildData, error: guildError } = await supabase
@@ -115,9 +105,8 @@ export default function GuildDetails() {
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 pb-20 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-500/5 blur-[120px] rounded-full"></div>
-            <Navbar profile={userProfile} />
 
-            <div className="max-w-7xl mx-auto px-4 md:px-8 pt-24 md:pt-32 pb-24 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24 pb-24 relative z-10">
                 {/* Header Card */}
                 <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-premium overflow-hidden mb-12 border border-white dark:border-slate-800 transition-all hover:shadow-2xl">
                     <div className="h-48 bg-gradient-to-r from-primary-600 via-indigo-700 to-violet-800 relative">

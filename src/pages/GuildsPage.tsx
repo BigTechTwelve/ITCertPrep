@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import Navbar from '../components/common/Navbar';
 import { Users, Plus, Search, LogIn } from 'lucide-react';
 import type { Database } from '../types/supabase';
 
@@ -10,7 +9,6 @@ type Profile = Database['public']['Tables']['profiles']['Row'];
 
 export default function GuildsPage() {
     const { user } = useAuth();
-    const [profile, setProfile] = useState<Profile | null>(null);
     const [guilds, setGuilds] = useState<Guild[]>([]);
     const [myGuilds, setMyGuilds] = useState<Guild[]>([]);
     const [loading, setLoading] = useState(true);
@@ -21,14 +19,6 @@ export default function GuildsPage() {
     useEffect(() => {
         async function loadData() {
             if (!user) return;
-
-            // Fetch Profile
-            const { data: profileData } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', user.id)
-                .single();
-            setProfile(profileData);
 
             // Fetch All Public Guilds
             const { data: allGuilds } = await supabase
@@ -132,9 +122,8 @@ export default function GuildsPage() {
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 pb-20 relative overflow-hidden">
             <div className="absolute top-0 -left-20 w-96 h-96 bg-primary-500/5 blur-[120px] rounded-full"></div>
-            <Navbar profile={profile} />
 
-            <div className="max-w-7xl mx-auto px-4 md:px-8 pt-24 md:pt-32 pb-24 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24 pb-24 relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-8 text-center md:text-left">
                     <div>
                         <h1 className="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">

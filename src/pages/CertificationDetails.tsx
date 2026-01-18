@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ArrowLeft, PlayCircle, Target, Trophy } from 'lucide-react';
-import Navbar from '../components/common/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 
 interface Objective {
@@ -20,7 +19,6 @@ export default function CertificationDetails() {
     const { certId } = useParams<{ certId: string }>();
     const navigate = useNavigate();
     const { user } = useAuth();
-    const [profile, setProfile] = useState<any>(null);
     const [certification, setCertification] = useState<Certification | null>(null);
     const [objectives, setObjectives] = useState<Objective[]>([]);
     const [loading, setLoading] = useState(true);
@@ -49,15 +47,6 @@ export default function CertificationDetails() {
                 if (objError) throw objError;
                 setObjectives(objs || []);
 
-                if (user) {
-                    const { data: profile } = await supabase
-                        .from('profiles')
-                        .select('*')
-                        .eq('id', user.id)
-                        .single();
-                    setProfile(profile);
-                }
-
             } catch (err) {
                 console.error('Error fetching details:', err);
             } finally {
@@ -72,9 +61,8 @@ export default function CertificationDetails() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-[var(--bg-app)] transition-colors duration-300">
-            <Navbar profile={profile} />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 pb-24">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-24">
                 <div className="space-y-8 fade-in">
                     {/* Header */}
                     <div>
