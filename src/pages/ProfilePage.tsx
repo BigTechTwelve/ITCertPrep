@@ -195,7 +195,7 @@ export default function ProfilePage() {
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 pb-20 fade-in">
-            <div className="max-w-5xl mx-auto pt-24 md:pt-32 pb-24 px-4 sm:px-6 lg:px-8 space-y-8">
+            <div className="max-w-5xl mx-auto pt-20 px-4 sm:px-6 lg:px-8 space-y-8">
                 {/* Header Card */}
                 <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-premium overflow-hidden border border-white dark:border-slate-800 transition-all hover:shadow-2xl relative group">
                     {/* Cover Gradient */}
@@ -227,7 +227,7 @@ export default function ProfilePage() {
 
                             <div className="flex-1 mb-2 text-center md:text-left w-full">
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                    <div className="flex flex-col justify-center min-h-[100px]">
+                                    <div className="flex flex-col">
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider opacity-70 block">Operative Codename</label>
                                             <div className="h-14 flex items-center">
