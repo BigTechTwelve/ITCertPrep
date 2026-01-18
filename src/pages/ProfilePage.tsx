@@ -138,6 +138,51 @@ export default function ProfilePage() {
         }
         setPasswordLoading(false);
     };
+    const [uploading, setUploading] = useState(false);
+
+    const uploadAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            setUploading(true);
+
+            if (!event.target.files || event.target.files.length === 0) {
+                throw new Error('You must select an image to upload.');
+            }
+
+            const file = event.target.files[0];
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${user!.id}/${Math.random()}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file);
+
+            if (uploadError) {
+                throw uploadError;
+            }
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(filePath);
+
+            const { error: updateError } = await supabase
+                .from('profiles')
+                .update({ avatar_url: publicUrl })
+                .eq('id', user!.id);
+
+            if (updateError) {
+                throw updateError;
+            }
+
+            setProfile(prev => prev ? { ...prev, avatar_url: publicUrl } : null);
+            alert('Avatar updated!');
+
+        } catch (error: any) {
+            alert(error.message);
+        } finally {
+            setUploading(false);
+        }
+    };
 
     if (loading) return <div className="h-screen flex items-center justify-center text-slate-400 font-medium">Synchronizing profile data...</div>;
 
@@ -219,9 +264,27 @@ export default function ProfilePage() {
                                     className="relative rounded-[32px] border-4 border-white dark:border-slate-900 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500"
                                 />
                                 {isOwnProfile && (
-                                    <button className="absolute bottom-2 right-2 p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 text-primary-600 dark:text-primary-400 hover:scale-110 active:scale-95 transition-all">
-                                        <Camera className="w-5 h-5" />
-                                    </button>
+                                    <>
+                                        <input
+                                            type="file"
+                                            id="avatar-upload"
+                                            className="hidden"
+                                            accept="image/*"
+                                            onChange={uploadAvatar}
+                                            disabled={uploading}
+                                        />
+                                        <button
+                                            onClick={() => document.getElementById('avatar-upload')?.click()}
+                                            disabled={uploading}
+                                            className="absolute bottom-2 right-2 p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 text-primary-600 dark:text-primary-400 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {uploading ? (
+                                                <div className="w-5 h-5 border-2 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
+                                            ) : (
+                                                <Camera className="w-5 h-5" />
+                                            )}
+                                        </button>
+                                    </>
                                 )}
                             </div>
 
