@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Award, ChevronRight, Book, ArrowLeft } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+
 
 interface Certification {
     id: string;
@@ -12,7 +12,6 @@ interface Certification {
 
 export default function CertificationsPage() {
     const navigate = useNavigate();
-    const { user } = useAuth();
     const [certifications, setCertifications] = useState<Certification[]>([]);
     const [loading, setLoading] = useState(true);
 

@@ -5,7 +5,6 @@ import { Users, Plus, Search, LogIn } from 'lucide-react';
 import type { Database } from '../types/supabase';
 
 type Guild = Database['public']['Tables']['guilds']['Row'];
-type Profile = Database['public']['Tables']['profiles']['Row'];
 
 export default function GuildsPage() {
     const { user } = useAuth();

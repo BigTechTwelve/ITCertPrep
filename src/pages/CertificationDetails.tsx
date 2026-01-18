@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ArrowLeft, PlayCircle, Target, Trophy } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
 
 interface Objective {
     id: string;
@@ -18,7 +17,6 @@ interface Certification {
 export default function CertificationDetails() {
     const { certId } = useParams<{ certId: string }>();
     const navigate = useNavigate();
-    const { user } = useAuth();
     const [certification, setCertification] = useState<Certification | null>(null);
     const [objectives, setObjectives] = useState<Objective[]>([]);
     const [loading, setLoading] = useState(true);
