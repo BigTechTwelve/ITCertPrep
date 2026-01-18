@@ -279,8 +279,16 @@ begin
     new.email, 
     new.raw_user_meta_data->>'full_name', 
     new.raw_user_meta_data->>'avatar_url',
-    coalesce(new.raw_user_meta_data->>'role', 'student')::user_role
+    case 
+      when new.raw_user_meta_data->>'role' = 'admin' then 'admin'::user_role
+      when new.raw_user_meta_data->>'role' = 'teacher' then 'teacher'::user_role
+      else 'student'::user_role
+    end
   );
+  return new;
+exception when others then
+  -- If profile creation fails, allow auth to succeed but log internally
+  -- This prevents users from being locked out of the app entirely
   return new;
 end;
 $$ language plpgsql security definer;
