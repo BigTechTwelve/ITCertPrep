@@ -229,9 +229,9 @@ export default function ProfilePage() {
                             <div className="flex-1 mb-2 text-center md:text-left w-full">
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div>
-                                        {isEditing ? (
-                                            <div className="mb-2">
-                                                <label className="block text-[10px] font-black uppercase text-slate-400 tracking-wider mb-1">Codename</label>
+                                        <div className="mb-4">
+                                            <label className="block text-[10px] font-black uppercase text-slate-400 tracking-wider mb-1 opacity-70">Codename</label>
+                                            {isEditing ? (
                                                 <input
                                                     type="text"
                                                     className="text-3xl font-black text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 border-b-2 border-primary-500 focus:outline-none px-2 py-1 rounded-t-lg w-full md:w-auto"
@@ -239,12 +239,12 @@ export default function ProfilePage() {
                                                     onChange={e => setEditForm({ ...editForm, full_name: e.target.value })}
                                                     autoFocus
                                                 />
-                                            </div>
-                                        ) : (
-                                            <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none mb-2">
-                                                {profile.full_name || 'Anonymous User'}
-                                            </h1>
-                                        )}
+                                            ) : (
+                                                <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
+                                                    {profile.full_name || 'Anonymous User'}
+                                                </h1>
+                                            )}
+                                        </div>
                                         <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 font-medium pb-2 md:pb-0">
                                             {isTeacher ? (
                                                 <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-black uppercase tracking-widest border border-slate-200 dark:border-slate-700">
