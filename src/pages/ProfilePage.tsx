@@ -84,6 +84,7 @@ export default function ProfilePage() {
     const handleSave = async () => {
         if (!user) return;
 
+        console.log('Profile: Attempting to save changes:', editForm);
         const { error } = await supabase
             .from('profiles')
             .update({
@@ -94,7 +95,11 @@ export default function ProfilePage() {
             })
             .eq('id', user.id);
 
-        if (!error) {
+        if (error) {
+            console.error('Profile: Save error:', error);
+            alert(`Error saving profile: ${error.message}`);
+        } else {
+            console.log('Profile: Save successful');
             setProfile(prev => prev ? { ...prev, ...editForm } : null);
             setIsEditing(false);
         }
@@ -202,8 +207,8 @@ export default function ProfilePage() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     </div>
 
-                    <div className="px-8 md:px-12 pb-12 relative">
-                        <div className="flex flex-col md:flex-row justify-between items-end -mt-20 gap-6">
+                    <div className="px-8 md:px-12 pb-12 relative pt-4 md:pt-8">
+                        <div className="flex flex-col md:flex-row justify-between items-end -mt-24 md:-mt-32 gap-6 pb-2">
 
                             <div className="relative group">
                                 <div className="absolute -inset-1 bg-gradient-to-r from-primary-600 to-indigo-600 rounded-[36px] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
