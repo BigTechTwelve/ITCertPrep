@@ -19,6 +19,7 @@ export default function ProfilePage() {
     const [showShareTooltip, setShowShareTooltip] = useState(false);
     const [editForm, setEditForm] = useState({
         full_name: '',
+        username: '',
         bio: '',
         is_public: true
     });
@@ -54,6 +55,7 @@ export default function ProfilePage() {
                 setProfile(data);
                 setEditForm({
                     full_name: data.full_name || '',
+                    username: data.username || '',
                     bio: data.bio || '',
                     is_public: data.is_public ?? true
                 });
@@ -86,6 +88,7 @@ export default function ProfilePage() {
             .from('profiles')
             .update({
                 full_name: editForm.full_name,
+                username: editForm.username,
                 bio: editForm.bio,
                 is_public: editForm.is_public
             })
@@ -253,9 +256,22 @@ export default function ProfilePage() {
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-center md:justify-start gap-3">
-                                        <span className="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-bold tracking-wide border border-slate-200 dark:border-slate-700">
-                                            @{profile.username || 'operative'}
-                                        </span>
+                                        {isEditing ? (
+                                            <div className="relative flex items-center">
+                                                <span className="absolute left-3 text-slate-400 font-bold">@</span>
+                                                <input
+                                                    type="text"
+                                                    placeholder="username"
+                                                    className="pl-7 pr-3 py-1 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold tracking-wide border-2 border-primary-500 focus:outline-none"
+                                                    value={editForm.username}
+                                                    onChange={e => setEditForm({ ...editForm, username: e.target.value.toLowerCase().replace(/\s/g, '') })}
+                                                />
+                                            </div>
+                                        ) : (
+                                            <span className="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-bold tracking-wide border border-slate-200 dark:border-slate-700">
+                                                @{profile.username || 'operative'}
+                                            </span>
+                                        )}
                                         <span className="px-3 py-1 rounded-lg bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 text-xs font-black uppercase tracking-widest border border-primary-100 dark:border-primary-800">
                                             {profile.role || 'Scholar'}
                                         </span>
