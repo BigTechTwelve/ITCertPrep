@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import Navbar from '../components/common/Navbar';
 import { SRSAlgorithm, type SRSItem } from '../lib/SRSAlgorithm';
 import type { Database } from '../types/supabase';
 import { RotateCcw, Clock, ThumbsUp, Star, List, Play, ChevronRight } from 'lucide-react';
@@ -192,7 +191,6 @@ export default function FlashcardPage() {
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 pb-20 relative overflow-hidden">
             <div className="absolute top-0 -left-20 w-96 h-96 bg-primary-500/5 blur-[120px] rounded-full"></div>
-            <Navbar profile={profile} />
             <BadgeNotification badges={earnedBadges} onClose={() => setEarnedBadges([])} />
 
             <div className="max-w-4xl mx-auto px-4 md:px-8 pt-24 md:pt-32 pb-24 relative z-10 w-full perspective-1000">

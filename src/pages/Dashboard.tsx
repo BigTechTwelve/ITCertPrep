@@ -5,7 +5,6 @@ import type { Database } from '../types/supabase';
 import StudentDashboard from '../components/dashboard/StudentDashboard';
 import TeacherDashboard from '../components/dashboard/TeacherDashboard';
 import AdminDashboard from '../components/dashboard/AdminDashboard';
-import Navbar from '../components/common/Navbar';
 
 import RoleOnboarding from '../components/auth/RoleOnboarding';
 
@@ -72,7 +71,8 @@ export default function Dashboard() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-[var(--bg-app)] transition-colors duration-300">
-            <Navbar profile={profile} />
+
+
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-24">
                 <div>

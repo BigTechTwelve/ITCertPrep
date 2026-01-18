@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import Navbar from '../components/common/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import { Trophy, Zap } from 'lucide-react';
 import UserAvatar from '../components/common/UserAvatar';
@@ -12,7 +11,6 @@ export default function LeaderboardPage() {
     const { user } = useAuth();
     const [leaders, setLeaders] = useState<Profile[]>([]);
     const [loading, setLoading] = useState(true);
-    const [currentUserProfile, setCurrentUserProfile] = useState<Profile | null>(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -28,16 +26,6 @@ export default function LeaderboardPage() {
 
             if (error) console.error('Error fetching leaderboard:', error);
             else setLeaders(data || []);
-
-            // Fetch current user profile if logged in
-            if (user) {
-                const { data: profile } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', user.id)
-                    .single();
-                setCurrentUserProfile(profile);
-            }
 
             setLoading(false);
         }
@@ -58,7 +46,6 @@ export default function LeaderboardPage() {
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 pb-20 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500/5 blur-[120px] rounded-full"></div>
-            <Navbar profile={currentUserProfile} />
 
             <div className="max-w-4xl mx-auto px-4 pt-24 md:pt-32 pb-24 relative z-10">
                 <div className="text-center mb-16">
