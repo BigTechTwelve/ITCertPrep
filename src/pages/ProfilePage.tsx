@@ -199,7 +199,7 @@ export default function ProfilePage() {
                 {/* Header Card */}
                 <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-premium overflow-hidden border border-white dark:border-slate-800 transition-all hover:shadow-2xl relative group">
                     {/* Cover Gradient */}
-                    <div className={`h-64 relative overflow-hidden ${isTeacher
+                    <div className={`h-48 relative overflow-hidden ${isTeacher
                         ? 'bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800'
                         : 'bg-gradient-to-br from-indigo-600 via-primary-600 to-violet-700'
                         }`}>
@@ -207,8 +207,8 @@ export default function ProfilePage() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     </div>
 
-                    <div className="px-8 md:px-12 pb-12 relative pt-4 md:pt-8">
-                        <div className="flex flex-col md:flex-row justify-between items-end -mt-24 md:-mt-32 gap-6 pb-2">
+                    <div className="px-8 md:px-12 pb-16 relative pt-4 md:pt-8">
+                        <div className="flex flex-col md:flex-row justify-between items-end -mt-20 md:-mt-24 gap-6 pb-2">
                             <div className="relative group">
                                 <div className="absolute -inset-1 bg-gradient-to-r from-primary-600 to-indigo-600 rounded-[36px] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
                                 <UserAvatar
