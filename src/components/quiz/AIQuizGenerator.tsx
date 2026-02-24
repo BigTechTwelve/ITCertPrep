@@ -21,8 +21,9 @@ export default function AIQuizGenerator({ onQuizGenerated }: AIQuizGeneratorProp
         try {
             const questions = await GeminiService.generateQuestions(topic, difficulty, count);
             onQuizGenerated(questions);
-        } catch (err: any) {
-            setError(err.message || 'Failed to generate quiz');
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Failed to generate quiz';
+            setError(message);
         } finally {
             setLoading(false);
         }

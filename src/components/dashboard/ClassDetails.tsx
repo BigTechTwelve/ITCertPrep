@@ -50,8 +50,8 @@ export default function ClassDetails() {
     const [availableQuizzes, setAvailableQuizzes] = useState<any[]>([]);
     const [selectedAssignment, setSelectedAssignment] = useState<any | null>(null);
 
-    // Check if current user is the teacher of this class (Allow DevTools override)
-    const isTeacher = user?.id === classDetails?.teacher_id && localStorage.getItem('user_role') !== 'student';
+    // UI-only helper; access is still enforced by RLS.
+    const isTeacher = user?.id === classDetails?.teacher_id;
 
     useEffect(() => {
         async function fetchData() {
@@ -139,7 +139,7 @@ export default function ClassDetails() {
             }
         }
         fetchData();
-    }, [classId]);
+    }, [classId, user]);
 
     const handleCopyCode = () => {
         if (classDetails?.code) {

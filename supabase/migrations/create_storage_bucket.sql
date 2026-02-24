@@ -24,7 +24,8 @@ create policy "Users can upload their own avatar"
   on storage.objects for insert
   with check (
     bucket_id = 'avatars' and
-    auth.role() = 'authenticated'
+    auth.role() = 'authenticated' and
+    (storage.foldername(name))[1] = auth.uid()::text
   );
 
 -- Policy: Users can update their own avatar
@@ -33,5 +34,6 @@ create policy "Users can update their own avatar"
   on storage.objects for update
   using (
     bucket_id = 'avatars' and
-    auth.role() = 'authenticated'
+    auth.role() = 'authenticated' and
+    (storage.foldername(name))[1] = auth.uid()::text
   );

@@ -25,8 +25,9 @@ export default function AIGenerationModal({ objectiveId, objectiveTitle, onSucce
             const questions = await GeminiService.generateQuestions(objectiveTitle, difficulty, count);
             setGeneratedQuestions(questions);
             setSelectedIndices(new Set(questions.map((_, i) => i))); // Select all by default
-        } catch (err: any) {
-            setError(err.message || 'Failed to generate questions');
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Failed to generate questions';
+            setError(message);
         } finally {
             setLoading(false);
         }
@@ -69,8 +70,9 @@ export default function AIGenerationModal({ objectiveId, objectiveTitle, onSucce
             }
 
             onSuccess();
-        } catch (err: any) {
-            setError(err.message || 'Failed to save questions');
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Failed to save questions';
+            setError(message);
         } finally {
             setLoading(false);
         }

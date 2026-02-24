@@ -1,15 +1,20 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Hardcoded for immediate execution to bypass missing dotenv
-const supabaseUrl = 'https://qvaqoxgocqmxntrbqcsm.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2YXFveGdvY3FteG50cmJxY3NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyNjQ4OTUsImV4cCI6MjA4Mzg0MDg5NX0.bH_SqQiuBtZZ-_c0rn4fq3hPh8DAYahk6EsPZMb1hHk';
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
+const teacherEmail = process.env.TEST_TEACHER_EMAIL;
+const teacherPassword = process.env.TEST_TEACHER_PASSWORD;
+
+if (!supabaseUrl || !supabaseKey || !teacherEmail || !teacherPassword) {
+    throw new Error('Missing required env vars: SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY (or SUPABASE_ANON_KEY), TEST_TEACHER_EMAIL, TEST_TEACHER_PASSWORD');
+}
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function createTestTeacher() {
-    const email = 'itcertprep.teacher@gmail.com';
-    const password = 'password123';
+    const email = teacherEmail;
+    const password = teacherPassword;
 
     console.log(`Creating teacher: ${email}...`);
 

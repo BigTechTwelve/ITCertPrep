@@ -1,73 +1,61 @@
-# React + TypeScript + Vite
+# ITCertPrep
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend app for certification prep with Supabase backend.
 
-Currently, two official plugins are available:
+## Environment
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Create `.env` from `.env.example` and set:
 
-## React Compiler
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_AI_PROXY_URL`
+- Server secret: `GEMINI_API_KEY` (for Vercel functions)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Security note:
 
-## Expanding the ESLint configuration
+- Do not place provider API keys (Gemini/OpenAI/etc.) in Vite `VITE_*` vars.
+- AI requests must go through a trusted server endpoint behind `VITE_AI_PROXY_URL`.
+- This repo now includes Vercel AI routes:
+  - `POST /api/ai/generate-questions`
+  - `POST /api/ai/explain-answer`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Scripts
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- `npm run dev`
+- `npm run build`
+- `npm run lint`
+- `npm test`
+- `npm run test:e2e`
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Security Migration
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+`supabase/migrations/20260224000000_security_hardening.sql` re-enables RLS and tightens notification/storage policies.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Immediate Next Steps
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Rotate credentials
+- Regenerate Supabase publishable key and Gemini/provider key.
+- Update local `.env` and deployment secrets.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. Apply and verify DB hardening
+- Apply `supabase/migrations/20260224000000_security_hardening.sql`.
+- Confirm RLS is enabled for `classes`, `class_enrollments`, and `pathways`.
+- Confirm notification insert policy requires `auth.uid() = user_id`.
+- Confirm avatar storage policies enforce user-owned folder paths.
+
+3. Deploy AI proxy endpoints
+- Implement `/api/ai/generate-questions` and `/api/ai/explain-answer`.
+- Keep provider key server-side only.
+- Add auth and rate limiting.
+
+4. Validate authorization behavior
+- Test student/teacher/admin paths for classes, enrollments, notifications, and avatar updates.
+- Test cross-user abuse attempts and confirm failure.
+
+5. Process controls
+- Keep one-off admin SQL scripts outside migration chain.
+- Add PR checklist items: no RLS disable, no hardcoded credentials, no privilege escalation scripts.
+
+6. Test coverage and CI
+- Add E2E coverage for RLS-sensitive workflows.
+- Enforce `npm run lint` and tests in CI.

@@ -86,7 +86,7 @@ export default function RosterUploader({ classId, onUploadComplete }: RosterUplo
                             successCount++;
                         }
 
-                    } catch (err: any) {
+                    } catch {
                         failCount++;
                         errorMessages.push(`${email}: Unexpected error`);
                     }

@@ -24,9 +24,10 @@ To enable Google Login in Supabase, you need to create a project in the Google C
 3. For **Application type**, select **Web application**.
 4. Name it (e.g., "Supabase Auth").
 5. **Authorized JavaScript origins**:
-   - Add your Supabase project URL: `https://qvaqoxgocqmxntrbqcsm.supabase.co`
+   - Add your Supabase project URL: `https://<your-project-ref>.supabase.co`
 6. **Authorized redirect URIs**:
-   - Add your Supabase callback URL: `https://qvaqoxgocqmxntrbqcsm.supabase.co/auth/v1/callback`
+   - Add your Supabase callback URL: `https://<your-project-ref>.supabase.co/auth/v1/callback`
+   - For local frontend development, also add your app URL callback if needed (example): `http://localhost:5173/login`
 7. Click **Create**.
 
 ## Step 4: Add to Supabase

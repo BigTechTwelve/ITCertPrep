@@ -14,11 +14,9 @@ BEGIN
     END IF;
 END $$;
 
--- 3. Relax RLS for Development
--- Since Dev Bypass buttons don't provide a real Supabase JWT, we must allow 'anon' role (public) to insert/update
--- OR we disable RLS. Disabling RLS is cleaner for "Dev Mode" on this specific table.
-
-ALTER TABLE pathways DISABLE ROW LEVEL SECURITY;
+-- 3. Security hardening
+-- Keep RLS enabled. Development bypass must not disable table security.
+ALTER TABLE pathways ENABLE ROW LEVEL SECURITY;
 
 -- If you prefer keeping RLS enabled but open to all:
 -- ALTER TABLE pathways ENABLE ROW LEVEL SECURITY;

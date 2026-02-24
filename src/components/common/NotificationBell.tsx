@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { Bell, Check } from 'lucide-react';
@@ -21,6 +21,27 @@ export default function NotificationBell() {
     const [unreadCount, setUnreadCount] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const fetchNotifications = useCallback(async () => {
+        if (!user) return;
+
+        const { count } = await supabase
+            .from('notifications')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id)
+            .eq('read', false);
+
+        if (count !== null) setUnreadCount(count);
+
+        const { data } = await supabase
+            .from('notifications')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(10);
+
+        if (data) setNotifications(data as Notification[]);
+    }, [user]);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -65,30 +86,7 @@ export default function NotificationBell() {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [user]);
-
-    const fetchNotifications = async () => {
-        if (!user) return;
-
-        // Fetch unread count
-        const { count } = await supabase
-            .from('notifications')
-            .select('*', { count: 'exact', head: true })
-            .eq('user_id', user.id)
-            .eq('read', false);
-
-        if (count !== null) setUnreadCount(count);
-
-        // Fetch recent notifications
-        const { data } = await supabase
-            .from('notifications')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
-            .limit(10);
-
-        if (data) setNotifications(data as Notification[]);
-    };
+    }, [user, fetchNotifications]);
 
     const markAsRead = async (id: string, link?: string) => {
         // Optimistic update

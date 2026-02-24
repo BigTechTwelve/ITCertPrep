@@ -36,7 +36,7 @@ CREATE POLICY "Users can update own notifications"
 CREATE POLICY "Users can insert notifications"
     ON notifications
     FOR INSERT
-    WITH CHECK (auth.uid() = user_id OR auth.uid() IS NOT NULL);
+    WITH CHECK (auth.uid() = user_id);
 
 -- Indexes
 CREATE INDEX idx_notifications_user_id ON notifications(user_id);
